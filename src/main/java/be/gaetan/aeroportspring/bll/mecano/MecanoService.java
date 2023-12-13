@@ -9,4 +9,5 @@ public interface MecanoService {
     void create(MecanoForm form);
     Mecano getOne(long id);
     List<Mecano> getAll();
+    void update(long id,MecanoForm form);
 }

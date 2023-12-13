@@ -53,4 +53,20 @@ public class MecanoServiceImpl implements MecanoService{
     public List<Mecano> getAll() {
         return mecanoRepository.findAllByDeleted(false);
     }
+    /**
+     * Updates a Mecano entity with the specified ID using the provided form data.
+     *
+     * @param id   the ID of the Mecano to update
+     * @param form the MecanoForm containing the updated information
+     * @throws EntityNotFoundException if the Mecano with the specified ID is not found or has been deleted
+     */
+    @Override
+    public void update(long id, MecanoForm form) {
+        Mecano mecano = mecanoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("mecanicien pas trouvé"));
+        if (mecano.isDeleted()) throw new EntityNotFoundException("mecanicien pas trouvé");
+        mecano.setName(form.name());
+        mecano.setAdress(form.adress());
+        mecano.setPhoneNumber(form.phoneNumber());
+        mecanoRepository.save(mecano);
+    }
 }

@@ -50,4 +50,14 @@ public class MecanoController {
                 .map(MecanoShortDto::fromEntity)
                 .toList());
     }
+    /**
+     * Updates a Mecano with the specified ID using the provided MecanoForm.
+     *
+     * @param id   The ID of the Mecano to update.
+     * @param form The MecanoForm object containing the updated information.
+     */
+    @PutMapping("/{id}")
+    public void updateMecano(@PathVariable long id, @RequestBody MecanoForm form) {
+        mecanoService.update(id, form);
+    }
 }
