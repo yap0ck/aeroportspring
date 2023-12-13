@@ -1,5 +1,6 @@
 package be.gaetan.aeroportspring.pl.models.typeAvion.form;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -9,11 +10,11 @@ public record TypeAvionForm(
         String name,
         @NotBlank @NotNull
         String constructeur,
-        @NotBlank @NotNull
-        @Positive
+        @NotNull
+        @Min(value = 1)
         int puissance,
-        @NotBlank @NotNull
-        @Positive
+        @NotNull
+        @Min(value = 1)
         int nbPlaces
 ) {
 }

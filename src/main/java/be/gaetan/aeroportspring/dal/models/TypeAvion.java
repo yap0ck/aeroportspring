@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 
 @Entity
-@Data @Builder
+@Data
 public class TypeAvion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +18,7 @@ public class TypeAvion {
     String constructor;
     int puissance;
     int nbPlaces;
+    boolean deleted;
 
-    public TypeAvion() {
 
-    }
 }
