@@ -1,12 +1,12 @@
 package be.gaetan.aeroportspring.dal.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,6 +19,7 @@ public class TypeAvion {
     private int puissance;
     private int nbPlaces;
     private boolean deleted;
-
+    @ManyToMany(mappedBy = "habilitations")
+    private List<Mecano> mecanoList;
 
 }

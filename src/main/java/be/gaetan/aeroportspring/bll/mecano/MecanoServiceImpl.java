@@ -1,7 +1,9 @@
 package be.gaetan.aeroportspring.bll.mecano;
 
+import be.gaetan.aeroportspring.dal.models.TypeAvion;
 import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
 import be.gaetan.aeroportspring.dal.repositories.MecanoRepository;
+import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,11 @@ import java.util.List;
 @Service
 public class MecanoServiceImpl implements MecanoService{
     private final MecanoRepository mecanoRepository;
+    private final TypeAvionRepository typeAvionRepository;
 
-    public MecanoServiceImpl(MecanoRepository mecanoRepository) {
+    public MecanoServiceImpl(MecanoRepository mecanoRepository,TypeAvionRepository typeAvionRepository) {
         this.mecanoRepository = mecanoRepository;
+        this.typeAvionRepository = typeAvionRepository;
     }
 
     /**
@@ -27,6 +31,10 @@ public class MecanoServiceImpl implements MecanoService{
         mecano.setName(form.name());
         mecano.setAdress(form.adress());
         mecano.setPhoneNumber(form.phoneNumber());
+        mecano.setHabilitations(form.habilitations().stream()
+                .map(e -> typeAvionRepository.findById(e)
+                        .orElseThrow(()->new EntityNotFoundException("Type d'avion non trouvé")))
+                .toList());
         mecanoRepository.save(mecano);
     }
 
@@ -67,6 +75,10 @@ public class MecanoServiceImpl implements MecanoService{
         mecano.setName(form.name());
         mecano.setAdress(form.adress());
         mecano.setPhoneNumber(form.phoneNumber());
+        mecano.setHabilitations(form.habilitations().stream()
+                .map(e -> typeAvionRepository.findById(e)
+                        .orElseThrow(()->new EntityNotFoundException("Type d'avion non trouvé")))
+                .toList());
         mecanoRepository.save(mecano);
     }
 

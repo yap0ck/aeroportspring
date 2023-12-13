@@ -74,4 +74,17 @@ public class TypeAvionController {
     public void delete(@PathVariable long id) {
         typeAvionService.delete(id);
     }
+
+    /**
+     * Retrieves a list of TypeAvionShortDto objects by mecano ID.
+     *
+     * @param id The ID of the mecano.
+     * @return ResponseEntity containing a list of TypeAvionShortDto objects.
+     */
+    @GetMapping("/mecano/{id}")
+    public ResponseEntity<List<TypeAvionShortDto>> getAllByMecanoId(@PathVariable long id){
+        return ResponseEntity.ok(typeAvionService.getAllByMecanoId(id).stream()
+                .map(TypeAvionShortDto::fromEntity)
+                .toList());
+    }
 }

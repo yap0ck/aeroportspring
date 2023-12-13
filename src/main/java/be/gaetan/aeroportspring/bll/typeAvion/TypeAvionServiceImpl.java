@@ -86,4 +86,15 @@ public class TypeAvionServiceImpl implements TypeAvionService{
         typeAvion.setDeleted(true);
         typeAvionRepository.save(typeAvion);
     }
+
+    /**
+     * Retrieves all TypeAvion objects associated with a specific mecano id.
+     *
+     * @param id the id of the mecano
+     * @return a List of TypeAvion objects associated with the specified mecano id
+     */
+    @Override
+    public List<TypeAvion> getAllByMecanoId(long id) {
+        return typeAvionRepository.findAllByMecanoId(id);
+    }
 }

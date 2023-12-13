@@ -11,4 +11,5 @@ public interface TypeAvionService {
     List<TypeAvion> getAll();
     void update(long id, TypeAvionForm form);
     void delete(long id);
+    List<TypeAvion> getAllByMecanoId(long id);
 }
