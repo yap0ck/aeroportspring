@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProprioServiceImpl implements ProprioService{
     private final ProprioRepository proprioRepository;
@@ -40,5 +42,15 @@ public class ProprioServiceImpl implements ProprioService{
         Proprio proprio = proprioRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("propriétaire pas trouvé"));
         if (proprio.isDeleted()) throw new EntityNotFoundException("propriétaire pas trouvé");
         return proprio;
+    }
+
+    /**
+     * Retrieves all non-deleted Proprio entities.
+     *
+     * @return A List containing all non-deleted Proprio entities.
+     */
+    @Override
+    public List<Proprio> getAll() {
+        return proprioRepository.findAllByDeleted(false);
     }
 }
