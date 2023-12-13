@@ -10,4 +10,5 @@ public interface ProprioService {
     Proprio getOne(long id);
     List<Proprio> getAll();
     void update(long id, ProprioForm form);
+    void delete(long id);
 }

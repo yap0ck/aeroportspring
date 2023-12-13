@@ -71,4 +71,18 @@ public class ProprioServiceImpl implements ProprioService{
         proprio.setPhoneNumber(form.phoneNumber());
         proprioRepository.save(proprio);
     }
+
+    /**
+     * Deletes a Proprio entity with the specified ID.
+     *
+     * @param id The ID of the Proprio entity to delete.
+     * @throws EntityNotFoundException If the Proprio entity is not found or if it is already marked as deleted.
+     */
+    @Override
+    public void delete(long id) {
+        Proprio proprio = proprioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("propriétaire pas trouvé"));
+        if (proprio.isDeleted()) throw new EntityNotFoundException("propriétaire pas trouvé");
+        proprio.setDeleted(true);
+        proprioRepository.save(proprio);
+    }
 }

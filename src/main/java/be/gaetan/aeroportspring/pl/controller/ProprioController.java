@@ -61,4 +61,14 @@ public class ProprioController {
     public void updateProprio(@PathVariable long id, @RequestBody @Valid ProprioForm form) {
         proprioService.update(id, form);
     }
+
+    /**
+     * Deletes a "Proprio" entity by its ID.
+     *
+     * @param id The ID of the "Proprio" entity to delete.
+     */
+    @DeleteMapping("/{id}")
+    public void deleteProprio(@PathVariable long id) {
+        proprioService.delete(id);
+    }
 }
