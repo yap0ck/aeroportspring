@@ -11,14 +11,14 @@ import lombok.Setter;
 public abstract class Personne {
     @Getter
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
     @Getter @Setter
     @Column(nullable = false)
-    String name;
+    private String name;
     @Getter @Setter
-    String adress;
+    private String adress;
     @Getter @Setter
-    String phoneNumber;
+    private String phoneNumber;
     @Getter @Setter
-    boolean deleted = false;
+    private boolean deleted = false;
 }

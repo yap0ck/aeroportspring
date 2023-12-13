@@ -4,21 +4,27 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Entity
-@Data
-public class TypeAvion {
+public class Intervention {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
-    private String constructor;
-    private int puissance;
-    private int nbPlaces;
+    @Getter
+    @Setter
+    private String objet;
+    @Getter
+    @Setter
+    private LocalDate date;
+    @Getter
+    @Setter
+    private int duree;
+    @Getter
+    @Setter
     private boolean deleted;
-
-
 }

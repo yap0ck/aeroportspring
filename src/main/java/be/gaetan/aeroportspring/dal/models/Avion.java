@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter @Setter
 public class Avion {
     @Id
-    String immatriculation;
-    boolean deleted;
+    private String immatriculation;
+    private boolean deleted;
 }

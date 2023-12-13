@@ -11,5 +11,5 @@ import lombok.Setter;
 
 public class Pilote extends Personne {
     @Column(nullable = false, unique = true)
-    long numBrevet;
+    private long numBrevet;
 }
