@@ -1,4 +1,4 @@
-package be.gaetan.aeroportspring.dal.models;
+package be.gaetan.aeroportspring.dal.models.personnes;
 
 import jakarta.persistence.*;
 import lombok.Data;

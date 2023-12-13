@@ -1,6 +1,6 @@
 package be.gaetan.aeroportspring.bll.pilote;
 
-import be.gaetan.aeroportspring.dal.models.Pilote;
+import be.gaetan.aeroportspring.dal.models.personnes.Pilote;
 import be.gaetan.aeroportspring.dal.repositories.PiloteRepository;
 import be.gaetan.aeroportspring.pl.models.pilote.form.PiloteForm;
 import jakarta.persistence.EntityNotFoundException;

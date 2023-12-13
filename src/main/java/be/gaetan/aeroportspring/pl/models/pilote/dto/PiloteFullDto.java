@@ -1,6 +1,6 @@
 package be.gaetan.aeroportspring.pl.models.pilote.dto;
 
-import be.gaetan.aeroportspring.dal.models.Pilote;
+import be.gaetan.aeroportspring.dal.models.personnes.Pilote;
 
 public record PiloteFullDto(
         long id,
