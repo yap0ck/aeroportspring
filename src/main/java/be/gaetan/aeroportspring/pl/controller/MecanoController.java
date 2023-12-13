@@ -2,8 +2,13 @@ package be.gaetan.aeroportspring.pl.controller;
 
 import be.gaetan.aeroportspring.bll.mecano.MecanoService;
 import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
+import be.gaetan.aeroportspring.pl.models.mecano.dto.MecanoFullDto;
+import be.gaetan.aeroportspring.pl.models.mecano.dto.MecanoShortDto;
 import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/mecano")
@@ -30,7 +35,19 @@ public class MecanoController {
      * @return The Mecano object with the specified ID.
      */
     @GetMapping("/{id}")
-    public Mecano getMecano(@PathVariable long id) {
-        return mecanoService.getOne(id);
+    public ResponseEntity<MecanoFullDto> getMecano(@PathVariable long id) {
+        return ResponseEntity.ok(MecanoFullDto.fromEntity(mecanoService.getOne(id)));
+    }
+
+    /**
+     * Retrieves all Mecanos.
+     *
+     * @return ResponseEntity<List < MecanoShortDto>> The ResponseEntity containing a list of MecanoShortDto objects.
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<MecanoShortDto>> getAllMecanos() {
+        return ResponseEntity.ok(mecanoService.getAll().stream()
+                .map(MecanoShortDto::fromEntity)
+                .toList());
     }
 }

@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MecanoServiceImpl implements MecanoService{
     private final MecanoRepository mecanoRepository;
@@ -40,5 +42,15 @@ public class MecanoServiceImpl implements MecanoService{
         Mecano mecano = mecanoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("mecanicien pas trouvé"));
         if (mecano.isDeleted()) throw new EntityNotFoundException("mecanicien pas trouvé");
         return mecano;
+    }
+
+    /**
+     * Retrieves all non-deleted Mecano objects.
+     *
+     * @return a list of Mecano objects
+     */
+    @Override
+    public List<Mecano> getAll() {
+        return mecanoRepository.findAllByDeleted(false);
     }
 }
