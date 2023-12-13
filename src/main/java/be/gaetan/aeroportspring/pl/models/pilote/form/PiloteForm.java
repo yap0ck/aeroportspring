@@ -4,6 +4,6 @@ public record PiloteForm(
         String name,
         String adress,
         String phoneNumber,
-        String numBrevet
+        long numBrevet
 ) {
 }
