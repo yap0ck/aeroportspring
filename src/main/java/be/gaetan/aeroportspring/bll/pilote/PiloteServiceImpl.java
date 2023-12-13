@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.pl.models.pilote.form.PiloteForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PiloteServiceImpl implements PiloteService{
     private final PiloteRepository piloteRepository;
@@ -42,5 +44,15 @@ public class PiloteServiceImpl implements PiloteService{
     @Override
     public Pilote getOne(long id) {
         return piloteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Pilote non trouvé"));
+    }
+
+    /**
+     * Retrieves all Pilote objects from the repository.
+     *
+     * @return A list of Pilote objects.
+     */
+    @Override
+    public List<Pilote> getAll() {
+        return piloteRepository.findAll();
     }
 }
