@@ -52,4 +52,13 @@ public class ProprioController {
                 .map(ProprioShortDto::fromEntity)
                 .toList());
     }
+
+    /**
+     * Updates the "Proprio" entity with the provided ID using the data from the provided form.
+     *
+     * @param id   The ID of the "Proprio*/
+    @PutMapping("/{id}")
+    public void updateProprio(@PathVariable long id, @RequestBody @Valid ProprioForm form) {
+        proprioService.update(id, form);
+    }
 }

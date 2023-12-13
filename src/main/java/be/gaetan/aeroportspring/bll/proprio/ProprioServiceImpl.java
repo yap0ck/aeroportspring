@@ -53,4 +53,22 @@ public class ProprioServiceImpl implements ProprioService{
     public List<Proprio> getAll() {
         return proprioRepository.findAllByDeleted(false);
     }
+
+    /**
+     * Updates a Proprio entity with the specified ID using the provided form data.
+     * Throws an EntityNotFoundException if the Proprio entity is not found or marked as deleted.
+     *
+     * @param id   The ID of the Proprio entity to update.
+     * @param form The ProprioForm object containing the updated data for the Proprio.
+     * @throws EntityNotFoundException If the Proprio entity is not found or marked as deleted.
+     */
+    @Override
+    public void update(long id, ProprioForm form) {
+        Proprio proprio = proprioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("propriétaire pas trouvé"));
+        if (proprio.isDeleted()) throw new EntityNotFoundException("propriétaire pas trouvé");
+        proprio.setName(form.name());
+        proprio.setAdress(form.adress());
+        proprio.setPhoneNumber(form.phoneNumber());
+        proprioRepository.save(proprio);
+    }
 }
