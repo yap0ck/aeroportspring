@@ -10,4 +10,5 @@ public interface MecanoService {
     Mecano getOne(long id);
     List<Mecano> getAll();
     void update(long id,MecanoForm form);
+    void delete(long id);
 }

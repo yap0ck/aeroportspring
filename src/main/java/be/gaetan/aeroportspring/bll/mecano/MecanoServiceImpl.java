@@ -69,4 +69,17 @@ public class MecanoServiceImpl implements MecanoService{
         mecano.setPhoneNumber(form.phoneNumber());
         mecanoRepository.save(mecano);
     }
+
+    /**
+     * Deletes a Mecano entity with the specified ID.
+     *
+     * @param id the ID of the Mecano to delete
+     * @throws EntityNotFoundException if the Mecano with the specified ID is not found or has been deleted
+     */
+    @Override
+    public void delete(long id) {
+        Mecano mecano = mecanoRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("mecanicien pas trouvé"));
+        mecano.setDeleted(true);
+        mecanoRepository.save(mecano);
+    }
 }

@@ -60,4 +60,14 @@ public class MecanoController {
     public void updateMecano(@PathVariable long id, @RequestBody MecanoForm form) {
         mecanoService.update(id, form);
     }
+
+    /**
+     * Deletes a Mecano with the specified ID.
+     *
+     * @param id The ID of the Mecano to delete.
+     */
+    @DeleteMapping("/{id}")
+    public void deleteMecano(@PathVariable long id) {
+        mecanoService.delete(id);
+    }
 }
