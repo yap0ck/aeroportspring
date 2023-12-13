@@ -1,12 +1,11 @@
 package be.gaetan.aeroportspring.pl.controller;
 
 import be.gaetan.aeroportspring.bll.proprio.ProprioService;
+import be.gaetan.aeroportspring.pl.models.proprio.dto.ProprioFullDto;
 import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/proprio")
@@ -25,5 +24,16 @@ public class ProprioController {
     @PostMapping("/")
     public void createProprio(@RequestBody @Valid ProprioForm form) {
         proprioService.create(form);
+    }
+
+    /**
+     * Retrieves a single "Proprio" by its ID.
+     *
+     * @param id The ID of the "Proprio" to retrieve.
+     * @return A ResponseEntity containing the ProprioFullDto of the retrieved "Proprio".
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ProprioFullDto> getProprio(@PathVariable long id) {
+        return ResponseEntity.ok(ProprioFullDto.fromEntity(proprioService.getOne(id)));
     }
 }

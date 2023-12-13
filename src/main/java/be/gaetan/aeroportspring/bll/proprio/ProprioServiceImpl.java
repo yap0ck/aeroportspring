@@ -3,6 +3,7 @@ package be.gaetan.aeroportspring.bll.proprio;
 import be.gaetan.aeroportspring.dal.models.personnes.Proprio;
 import be.gaetan.aeroportspring.dal.repositories.ProprioRepository;
 import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,5 +26,19 @@ public class ProprioServiceImpl implements ProprioService{
         proprio.setAdress(form.adress());
         proprio.setPhoneNumber(form.phoneNumber());
         proprioRepository.save(proprio);
+    }
+
+    /**
+     * Retrieves a Proprio entity by its ID.
+     *
+     * @param id The ID of the Proprio entity to retrieve.
+     * @return The retrieved Proprio entity.
+     * @throws EntityNotFoundException If the Proprio entity is not found or if it is marked as deleted.
+     */
+    @Override
+    public Proprio getOne(long id) {
+        Proprio proprio = proprioRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("propriétaire pas trouvé"));
+        if (proprio.isDeleted()) throw new EntityNotFoundException("propriétaire pas trouvé");
+        return proprio;
     }
 }
