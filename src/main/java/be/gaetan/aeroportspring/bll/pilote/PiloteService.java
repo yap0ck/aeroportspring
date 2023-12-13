@@ -9,5 +9,6 @@ public interface PiloteService {
     void create(PiloteForm form);
     Pilote getOne(long id);
     List<Pilote> getAll();
+    void update(long id, PiloteForm form);
 
 }

@@ -54,4 +54,16 @@ public class PiloteController {
                 .map(PiloteShortDto::fromEntity)
                 .toList());
     }
+
+    /**
+     * Updates a pilot record with the provided ID using the data from the PiloteForm object.
+     *
+     * @param id   The ID of the pilot to be updated.
+     * @param form The PiloteForm object containing the updated pilot details.
+     *             The object should be annotated with the @Valid annotation to enable validation of the input data.
+     */
+    @PutMapping("/{id}")
+    public void update(@PathVariable long id, @RequestBody @Valid PiloteForm form) {
+        piloteService.update(id, form);
+    }
 }

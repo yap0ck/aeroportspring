@@ -55,4 +55,23 @@ public class PiloteServiceImpl implements PiloteService{
     public List<Pilote> getAll() {
         return piloteRepository.findAll();
     }
+
+    /**
+     * Updates a Pilote object with the specified ID using the provided PiloteForm object.
+     *
+     * @param id   The ID of the Pilote to update.
+     * @param form The PiloteForm object containing the updated data.
+     * @throws IllegalArgumentException    if the form is null.
+     * @throws EntityNotFoundException      if the Pilote with the specified ID is not found.
+     */
+    @Override
+    public void update(long id, PiloteForm form) {
+        if (form == null) throw new IllegalArgumentException("le formulaire ne peut etre null");
+        Pilote pilote = piloteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pilote non trouvé"));
+        pilote.setName(form.name());
+        pilote.setAdress(form.adress());
+        pilote.setPhoneNumber(form.phoneNumber());
+        pilote.setNumBrevet(form.numBrevet());
+        piloteRepository.save(pilote);
+    }
 }
