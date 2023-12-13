@@ -10,5 +10,5 @@ public interface PiloteService {
     Pilote getOne(long id);
     List<Pilote> getAll();
     void update(long id, PiloteForm form);
-
+    void delete(long id);
 }

@@ -66,4 +66,14 @@ public class PiloteController {
     public void update(@PathVariable long id, @RequestBody @Valid PiloteForm form) {
         piloteService.update(id, form);
     }
+
+    /**
+     * Deletes a pilot record with the provided ID.
+     *
+     * @param id The ID of the pilot record to be deleted.
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        piloteService.delete(id);
+    }
 }

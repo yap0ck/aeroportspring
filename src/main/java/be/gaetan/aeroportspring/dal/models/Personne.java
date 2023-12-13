@@ -18,4 +18,6 @@ public abstract class Personne {
     String adress;
     @Getter @Setter
     String phoneNumber;
+    @Getter @Setter
+    boolean deleted = false;
 }

@@ -35,25 +35,27 @@ public class PiloteServiceImpl implements PiloteService{
     }
 
     /**
-     * Retrieves a Pilote object with the specified ID.
+     * Retrieves a Pilote object from the repository with the specified ID.
      *
      * @param id The ID of the Pilote to retrieve.
-     * @return The Pilote object with the specified ID.
-     * @throws EntityNotFoundException if the Pilote with the specified ID is not found.
+     * @return The retrieved Pilote object.
+     * @throws EntityNotFoundException If the Pilote with the specified ID is not found.
      */
     @Override
     public Pilote getOne(long id) {
-        return piloteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Pilote non trouvé"));
+        Pilote pilote = piloteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Pilote non trouvé"));
+        if (pilote.isDeleted())throw new EntityNotFoundException("pilote non trouvé");
+        return pilote;
     }
 
     /**
-     * Retrieves all Pilote objects from the repository.
+     * Retrieves a list of all non-deleted pilots from the repository.
      *
-     * @return A list of Pilote objects.
+     * @return The list of non-deleted pilots.
      */
     @Override
     public List<Pilote> getAll() {
-        return piloteRepository.findAll();
+        return piloteRepository.findAllByDeleted(false);
     }
 
     /**
@@ -68,10 +70,24 @@ public class PiloteServiceImpl implements PiloteService{
     public void update(long id, PiloteForm form) {
         if (form == null) throw new IllegalArgumentException("le formulaire ne peut etre null");
         Pilote pilote = piloteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pilote non trouvé"));
+        if (pilote.isDeleted()) throw new EntityNotFoundException("pilote non trouvé");
         pilote.setName(form.name());
         pilote.setAdress(form.adress());
         pilote.setPhoneNumber(form.phoneNumber());
         pilote.setNumBrevet(form.numBrevet());
+        piloteRepository.save(pilote);
+    }
+
+    /**
+     * Deletes a Pilote object from the repository with the specified ID.
+     *
+     * @param id The ID of the Pilote to delete.
+     * @throws EntityNotFoundException If the Pilote with the specified ID is not found.
+     */
+    @Override
+    public void delete(long id) {
+        Pilote pilote = piloteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("pilote non trouvé"));
+        pilote.setDeleted(true);
         piloteRepository.save(pilote);
     }
 }
