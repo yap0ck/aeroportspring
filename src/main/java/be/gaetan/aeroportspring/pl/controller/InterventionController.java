@@ -74,4 +74,32 @@ public class InterventionController {
     public void delete(@PathVariable long id){
         interventionService.delete(id);
     }
+
+    /**
+     * Retrieves all interventions associated with a specific verificateur.
+     *
+     * @param id The ID of the verificateur.
+     * @return ResponseEntity representing a list of InterventionShortDto objects,
+     *         or ResponseEntity with no body if there are no interventions.
+     */
+    @GetMapping("/verificateur/{id}")
+    public ResponseEntity<List<InterventionShortDto>> getAllByVerificateur(@PathVariable long id) {
+        return ResponseEntity.ok(interventionService.getAllByVerificateur(id).stream()
+                .map(InterventionShortDto::fromEntity)
+                .toList());
+    }
+
+    /**
+     * Retrieves all interventions associated with a specific reparateur.
+     *
+     * @param id The ID of the reparateur.
+     * @return ResponseEntity representing a list of InterventionShortDto objects,
+     *         or ResponseEntity with no body if there are no interventions.
+     */
+    @GetMapping("/reparateur/{id}")
+    public ResponseEntity<List<InterventionShortDto>> getAllByReparateur(@PathVariable long id) {
+        return ResponseEntity.ok(interventionService.getAllByReparateur(id).stream()
+                .map(InterventionShortDto::fromEntity)
+                .toList());
+    }
 }

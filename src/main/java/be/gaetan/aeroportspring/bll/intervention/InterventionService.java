@@ -11,4 +11,6 @@ public interface InterventionService {
     List<Intervention> getAll();
     void update(long id, InterventionForm form);
     void delete(long id);
+    List<Intervention> getAllByVerificateur(long id);
+    List<Intervention> getAllByReparateur(long id);
 }
