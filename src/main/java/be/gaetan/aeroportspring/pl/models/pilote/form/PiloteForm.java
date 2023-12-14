@@ -13,9 +13,8 @@ public record PiloteForm(
         String adress,
         @NotNull @NotBlank
         String phoneNumber,
-        @NotNull @NotBlank
+        @NotNull
         long numBrevet,
-        @NotBlank @NotNull
         List<Long> piloteTypeAvionId
 ) {
 }

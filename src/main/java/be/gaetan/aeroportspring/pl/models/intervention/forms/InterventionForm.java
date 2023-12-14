@@ -10,7 +10,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@DifferentIds
 public record InterventionForm(
         @NotNull
         String objet,
@@ -18,13 +18,11 @@ public record InterventionForm(
         LocalDate date,
         @Min(value = 1)
         int duree,
-        @NotNull @NotBlank
+        @NotNull
         @Getter
-        @DifferentIds
         long reparateurId,
-        @NotNull @NotBlank
+        @NotNull
         @Getter
-        @DifferentIds
         long verificateurId,
         @NotBlank @NotNull
         String avionId

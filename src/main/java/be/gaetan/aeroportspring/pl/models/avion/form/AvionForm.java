@@ -10,9 +10,9 @@ public record AvionForm(
         @NotNull @NotBlank
         @Pattern(regexp = "^([A-Z]{2})([A-Z0-9-]+)$")
         String immatriculation,
-        @NotNull @NotBlank
+        @NotNull
         long typeAvionId,
-        @NotNull @NotBlank
+        @NotNull
         List<Long> proprioIdList
 ) {
 }

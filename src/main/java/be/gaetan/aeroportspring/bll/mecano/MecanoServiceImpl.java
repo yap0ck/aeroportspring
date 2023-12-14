@@ -8,6 +8,7 @@ import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -75,10 +76,10 @@ public class MecanoServiceImpl implements MecanoService{
         mecano.setName(form.name());
         mecano.setAdress(form.adress());
         mecano.setPhoneNumber(form.phoneNumber());
-        mecano.setHabilitations(form.habilitations().stream()
+        mecano.setHabilitations(new ArrayList<>(form.habilitations().stream()
                 .map(e -> typeAvionRepository.findById(e)
                         .orElseThrow(()->new EntityNotFoundException("Type d'avion non trouvé")))
-                .toList());
+                .toList()));
         mecanoRepository.save(mecano);
     }
 

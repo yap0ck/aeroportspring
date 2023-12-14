@@ -12,7 +12,7 @@ public record ProprioForm(
         String adress,
         @NotNull @NotBlank
         String phoneNumber,
-        @NotNull @NotBlank
+        @NotNull
         List<String> avionIdList
 ) {
 }
