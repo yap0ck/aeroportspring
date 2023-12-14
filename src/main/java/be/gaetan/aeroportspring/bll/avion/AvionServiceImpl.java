@@ -2,6 +2,7 @@ package be.gaetan.aeroportspring.bll.avion;
 
 import be.gaetan.aeroportspring.dal.models.Avion;
 import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
+import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.avion.form.AvionForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,11 @@ import java.util.List;
 @Service
 public class AvionServiceImpl implements AvionService{
     private final AvionRepository avionRepository;
+    private final TypeAvionRepository typeAvionRepository;
 
-    public AvionServiceImpl(AvionRepository avionRepository) {
+    public AvionServiceImpl(AvionRepository avionRepository, TypeAvionRepository typeAvionRepository) {
         this.avionRepository = avionRepository;
+        this.typeAvionRepository = typeAvionRepository;
     }
 
     /**
@@ -24,6 +27,7 @@ public class AvionServiceImpl implements AvionService{
     public void create(AvionForm form) {
         Avion avion = new Avion();
         avion.setImmatriculation(form.immatriculation());
+        avion.setTypeAvion(typeAvionRepository.findById(form.typeAvionId()).orElseThrow(()-> new EntityNotFoundException("type d'avion pas trouvé")));
         avionRepository.save(avion);
     }
 
@@ -62,6 +66,7 @@ public class AvionServiceImpl implements AvionService{
     public void update(String id, AvionForm form) {
         Avion avion = getOne(id);
         avion.setImmatriculation(form.immatriculation());
+        avion.setTypeAvion(typeAvionRepository.findById(form.typeAvionId()).orElseThrow(()-> new EntityNotFoundException("type d'avion pas trouvé")));
         avionRepository.save(avion);
     }
 

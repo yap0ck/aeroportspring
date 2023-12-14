@@ -21,5 +21,6 @@ public class TypeAvion {
     private boolean deleted;
     @ManyToMany(mappedBy = "habilitations")
     private List<Mecano> mecanoList;
-
+    @OneToMany(mappedBy = "typeAvion", orphanRemoval = true)
+    private List<Avion> avionList;
 }
