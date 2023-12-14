@@ -46,26 +46,25 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
 
 
     /**
-     * Retrieves a PiloteTypeAvionDto object by its ID.
+     * Retrieves a PiloteTypeAvion entity by its ID.
      *
-     * @param id The ID of the PiloteTypeAvion entity to retrieve.
-     * @return ResponseEntity object containing the PiloteTypeAvionDto if found, otherwise throws an EntityNotFoundException.
+     * @param id The ID of the PiloteTypeAvion entity.
+     * @return The PiloteTypeAvion entity with the specified ID.
+     * @throws EntityNotFoundException If the PiloteTypeAvion entity is not found based on the provided ID.
      */
     @Override
-    public ResponseEntity<PiloteTypeAvionDto> getOneById(long id) {
-        return ResponseEntity.ok(PiloteTypeAvionDto.fromEntity(piloteTypeAvionRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("relation type avion - pilote pas trouvée"))));
+    public PiloteTypeAvion getOneById(long id) {
+        return piloteTypeAvionRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("relation type avion - pilote pas trouvée"));
     }
 
     /**
-     * Retrieves all PiloteTypeAvion objects that are not marked as deleted.
+     * Retrieves all PiloteTypeAvion entities that are not marked as deleted.
      *
-     * @return ResponseEntity object containing a list of PiloteTypeAvionDto objects if found, otherwise an empty list.
+     * @return A list of PiloteTypeAvion entities.
      */
     @Override
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAll() {
-        return ResponseEntity.ok(piloteTypeAvionRepository.findAllByDeleted(false).stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public List<PiloteTypeAvion> getAll() {
+        return piloteTypeAvionRepository.findAllByDeleted(false);
     }
 
     /**
@@ -81,7 +80,7 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
      */
     @Override
     public void update(long id, PiloteTypeAvionForm form) {
-        PiloteTypeAvion piloteTypeAvion = piloteTypeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("relationpilote type avion non trouvée"));
+        PiloteTypeAvion piloteTypeAvion = getOneById(id);
         piloteTypeAvion.setNbVols(form.nbVols());
         piloteTypeAvion.setTypeAvion(typeAvionRepository.findById(form.typeAvionId()).orElseThrow(()-> new EntityNotFoundException("Type d'avion non trouvé")));
         piloteTypeAvion.setPilote(piloteRepository.findById(form.piloteId()).orElseThrow(() -> new EntityNotFoundException("Pilote non trouvé")));
@@ -96,36 +95,32 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
      */
     @Override
     public void delete(long id) {
-        PiloteTypeAvion piloteTypeAvion = piloteTypeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("relationpilote type avion non trouvée"));
+        PiloteTypeAvion piloteTypeAvion = getOneById(id);
         piloteTypeAvion.setDeleted(true);
         piloteTypeAvionRepository.save(piloteTypeAvion);
     }
 
     /**
-     * Retrieves all PiloteTypeAvionDto objects associated with a specific Pilote.
+     * Retrieves all PiloteTypeAvion entities associated with a specific Pilote.
      *
      * @param id The ID of the Pilote.
-     * @return ResponseEntity object containing a list of PiloteTypeAvionDto objects if found, otherwise an empty list.
+     * @return A list of PiloteTypeAvion entities associated with the specified Pilote.
      * @throws EntityNotFoundException If the Pilote is not found based on the provided ID.
      */
     @Override
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAllByPilote(long id) {
-        return ResponseEntity.ok(piloteTypeAvionRepository.findByPilote(piloteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("pilote non trouvé"))).stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public List<PiloteTypeAvion> getAllByPilote(long id) {
+        return piloteTypeAvionRepository.findByPilote(piloteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("pilote non trouvé")));
     }
 
     /**
-     * Retrieves all PiloteTypeAvionDto objects associated with a specific TypeAvion.
+     * Retrieves all PiloteTypeAvion entities by the ID of the type avion.
      *
-     * @param id The ID of the TypeAvion.
-     * @return ResponseEntity object containing a list of PiloteTypeAvionDto objects if found, otherwise an empty list.
-     * @throws EntityNotFoundException If the TypeAvion is not found based on the provided ID.
+     * @param id The ID of the type avion.
+     * @return A list of PiloteTypeAvion entities associated with the specified type avion.
+     * @throws EntityNotFoundException If the type avion is not found based on the provided ID.
      */
     @Override
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAllByTypeAvion(long id) {
-        return ResponseEntity.ok(piloteTypeAvionRepository.findByTypeAvion(typeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("type d'avion non trouvé"))).stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public List<PiloteTypeAvion> getAllByTypeAvion(long id) {
+        return piloteTypeAvionRepository.findByTypeAvion(typeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("type d'avion non trouvé")));
     }
 }
