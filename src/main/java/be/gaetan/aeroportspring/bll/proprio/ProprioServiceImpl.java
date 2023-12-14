@@ -1,6 +1,7 @@
 package be.gaetan.aeroportspring.bll.proprio;
 
 import be.gaetan.aeroportspring.dal.models.personnes.Proprio;
+import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.ProprioRepository;
 import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class ProprioServiceImpl implements ProprioService{
     private final ProprioRepository proprioRepository;
+    private final AvionRepository avionRepository;
 
-    public ProprioServiceImpl(ProprioRepository proprioRepository) {
+    public ProprioServiceImpl(ProprioRepository proprioRepository, AvionRepository avionRepository) {
         this.proprioRepository = proprioRepository;
+        this.avionRepository = avionRepository;
     }
 
     /**
@@ -27,6 +30,9 @@ public class ProprioServiceImpl implements ProprioService{
         proprio.setName(form.name());
         proprio.setAdress(form.adress());
         proprio.setPhoneNumber(form.phoneNumber());
+        proprio.setAvionList(form.avionIdList().stream()
+                .map(e-> avionRepository.findById(e).orElseThrow(()-> new EntityNotFoundException("avion pas trouvé")))
+                .toList());
         proprioRepository.save(proprio);
     }
 
@@ -69,6 +75,9 @@ public class ProprioServiceImpl implements ProprioService{
         proprio.setName(form.name());
         proprio.setAdress(form.adress());
         proprio.setPhoneNumber(form.phoneNumber());
+        proprio.setAvionList(form.avionIdList().stream()
+                .map(e-> avionRepository.findById(e).orElseThrow(()-> new EntityNotFoundException("avion pas trouvé")))
+                .toList());
         proprioRepository.save(proprio);
     }
 
