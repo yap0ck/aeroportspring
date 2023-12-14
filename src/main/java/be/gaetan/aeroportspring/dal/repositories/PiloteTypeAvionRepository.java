@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PiloteTypeAvionRepository extends JpaRepository<PiloteTypeAvion,Long> {
+    List<PiloteTypeAvion>findAllByDeleted(boolean deleted);
     List<PiloteTypeAvion> findByPilote(Pilote pilote);
     List<PiloteTypeAvion> findByTypeAvion(TypeAvion typeAvion);
 }
