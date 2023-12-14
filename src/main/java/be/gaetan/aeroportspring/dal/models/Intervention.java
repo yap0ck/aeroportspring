@@ -1,9 +1,7 @@
 package be.gaetan.aeroportspring.dal.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +25,13 @@ public class Intervention {
     @Getter
     @Setter
     private boolean deleted;
+    @Getter
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "reparateur_id")
+    private Mecano reparateur;
+    @Getter @Setter
+    @ManyToOne
+    @JoinColumn(name = "verificateur_id")
+    private Mecano verificateur;
 }

@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface InterventionRepository extends JpaRepository<Intervention, Long>, JpaSpecificationExecutor<Intervention> {
     List<Intervention> findAllByDeleted(boolean deleted);
+    List<Intervention> findAllByReparateur(long id);
+    List<Intervention>findAllByVerificateur(long id);
 }
