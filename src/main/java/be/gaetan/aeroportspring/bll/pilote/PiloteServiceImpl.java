@@ -2,6 +2,7 @@ package be.gaetan.aeroportspring.bll.pilote;
 
 import be.gaetan.aeroportspring.dal.models.personnes.Pilote;
 import be.gaetan.aeroportspring.dal.repositories.PiloteRepository;
+import be.gaetan.aeroportspring.dal.repositories.PiloteTypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.pilote.form.PiloteForm;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class PiloteServiceImpl implements PiloteService{
     private final PiloteRepository piloteRepository;
+    private final PiloteTypeAvionRepository piloteTypeAvionRepository;
 
-    public PiloteServiceImpl(PiloteRepository piloteRepository) {
+    public PiloteServiceImpl(PiloteRepository piloteRepository, PiloteTypeAvionRepository piloteTypeAvionRepository) {
         this.piloteRepository = piloteRepository;
+        this.piloteTypeAvionRepository = piloteTypeAvionRepository;
     }
 
 
@@ -31,6 +34,9 @@ public class PiloteServiceImpl implements PiloteService{
         pilote.setAdress(form.adress());
         pilote.setPhoneNumber(form.phoneNumber());
         pilote.setNumBrevet(form.numBrevet());
+        pilote.setPiloteTypeAvionList(form.piloteTypeAvionId().stream()
+                .map(e-> piloteTypeAvionRepository.findById(e).orElseThrow(()->new EntityNotFoundException("relation pilote - type d'avion non trouvé")))
+                .toList());
         piloteRepository.save(pilote);
     }
 
@@ -75,6 +81,9 @@ public class PiloteServiceImpl implements PiloteService{
         pilote.setAdress(form.adress());
         pilote.setPhoneNumber(form.phoneNumber());
         pilote.setNumBrevet(form.numBrevet());
+        pilote.setPiloteTypeAvionList(form.piloteTypeAvionId().stream()
+                .map(e-> piloteTypeAvionRepository.findById(e).orElseThrow(()->new EntityNotFoundException("relation pilote - type d'avion non trouvé")))
+                .toList());
         piloteRepository.save(pilote);
     }
 

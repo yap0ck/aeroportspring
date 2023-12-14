@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 public record TypeAvionForm(
         @NotBlank @NotNull
         String name,
@@ -15,6 +17,7 @@ public record TypeAvionForm(
         int puissance,
         @NotNull
         @Min(value = 1)
-        int nbPlaces
+        int nbPlaces,
+        List<Long> piloteTypeAvionId
 ) {
 }

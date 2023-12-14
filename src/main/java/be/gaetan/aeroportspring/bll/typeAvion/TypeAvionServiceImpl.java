@@ -1,6 +1,7 @@
 package be.gaetan.aeroportspring.bll.typeAvion;
 
 import be.gaetan.aeroportspring.dal.models.TypeAvion;
+import be.gaetan.aeroportspring.dal.repositories.PiloteTypeAvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.typeAvion.form.TypeAvionForm;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class TypeAvionServiceImpl implements TypeAvionService{
     private final TypeAvionRepository typeAvionRepository;
+    private final PiloteTypeAvionRepository piloteTypeAvionRepository;
 
-    public TypeAvionServiceImpl(TypeAvionRepository typeAvionRepository) {
+    public TypeAvionServiceImpl(TypeAvionRepository typeAvionRepository, PiloteTypeAvionRepository piloteTypeAvionRepository) {
         this.typeAvionRepository = typeAvionRepository;
+        this.piloteTypeAvionRepository = piloteTypeAvionRepository;
     }
 
     /**
@@ -30,6 +33,9 @@ public class TypeAvionServiceImpl implements TypeAvionService{
         typeAvion.setConstructor(form.constructeur());
         typeAvion.setPuissance(form.puissance());
         typeAvion.setNbPlaces(form.nbPlaces());
+        typeAvion.setPiloteTypeAvionList(form.piloteTypeAvionId().stream()
+                .map(e-> piloteTypeAvionRepository.findById(e).orElseThrow(()->new EntityNotFoundException("relation pilote - type d'avion non trouvé")))
+                .toList());
         typeAvionRepository.save(typeAvion);
     }
 
@@ -71,6 +77,9 @@ public class TypeAvionServiceImpl implements TypeAvionService{
         typeAvion.setConstructor(form.constructeur());
         typeAvion.setPuissance(form.puissance());
         typeAvion.setNbPlaces(form.nbPlaces());
+        typeAvion.setPiloteTypeAvionList(form.piloteTypeAvionId().stream()
+                .map(e-> piloteTypeAvionRepository.findById(e).orElseThrow(()->new EntityNotFoundException("relation pilote - type d'avion non trouvé")))
+                .toList());
         typeAvionRepository.save(typeAvion);
     }
 

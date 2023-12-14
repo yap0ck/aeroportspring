@@ -1,5 +1,6 @@
 package be.gaetan.aeroportspring.dal.models;
 
+import be.gaetan.aeroportspring.dal.models.joinTables.PiloteTypeAvion;
 import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -23,4 +24,6 @@ public class TypeAvion {
     private List<Mecano> mecanoList;
     @OneToMany(mappedBy = "typeAvion", orphanRemoval = true)
     private List<Avion> avionList;
+    @OneToMany(mappedBy = "typeAvion")
+    private List<PiloteTypeAvion> piloteTypeAvionList;
 }
