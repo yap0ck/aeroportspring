@@ -4,11 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.List;
+
 public record AvionForm(
         @NotNull @NotBlank
         @Pattern(regexp = "^([A-Z]{2})([A-Z0-9-]+)$")
         String immatriculation,
         @NotNull @NotBlank
-        long typeAvionId
+        long typeAvionId,
+        @NotNull @NotBlank
+        List<Long> proprioIdList
 ) {
 }
