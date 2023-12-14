@@ -1,5 +1,6 @@
 package be.gaetan.aeroportspring.bll.intervention;
 
+import be.gaetan.aeroportspring.dal.models.Avion;
 import be.gaetan.aeroportspring.dal.models.Intervention;
 import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
 import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
@@ -24,9 +25,11 @@ public class InterventionServiceImpl implements InterventionService {
     }
 
     /**
-     * Creates a new Intervention based on the provided InterventionForm.
+     * Creates a new Intervention object based on the provided InterventionForm data and saves it to the database.
      *
-     * @param form the InterventionForm containing the data for the new Intervention
+     * @param form the InterventionForm containing the data for creating a new Intervention
+     * @throws EntityNotFoundException      if the verificateur, reparateur, or avion with the corresponding IDs are not found
+     * @throws IllegalArgumentException    if the reparateur is not authorized to work on the avion type
      */
     @Override
     public void create(InterventionForm form) {
@@ -35,8 +38,11 @@ public class InterventionServiceImpl implements InterventionService {
         intervention.setDate(form.date());
         intervention.setDuree(form.duree());
         intervention.setVerificateur(mecanoRepository.findById(form.verificateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
-        intervention.setReparateur(mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
-        intervention.setAvion(avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé")));
+        Mecano mecano = mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé"));
+        Avion avion = avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé"));
+        if (!mecano.getHabilitations().contains(avion.getTypeAvion())) throw new IllegalArgumentException("mécanicien pas habilité");
+        intervention.setReparateur(mecano);
+        intervention.setAvion(avion);
         interventionRepository.save(intervention);
     }
 
@@ -65,10 +71,12 @@ public class InterventionServiceImpl implements InterventionService {
     }
 
     /**
-     * Updates an existing Intervention object with the provided data from an InterventionForm.
+     * Updates an Intervention object with the provided ID based on the data from InterventionForm.
      *
      * @param id   the ID of the Intervention to update
-     * @param form the InterventionForm containing the data for update
+     * @param form the InterventionForm containing the updated data
+     * @throws EntityNotFoundException   if the verificateur, reparateur, or avion with the corresponding IDs are not found
+     * @throws IllegalArgumentException if the reparateur is not authorized to work on the avion type
      */
     @Override
     public void update(long id, InterventionForm form) {
@@ -77,8 +85,11 @@ public class InterventionServiceImpl implements InterventionService {
         intervention.setDate(form.date());
         intervention.setObjet(form.objet());
         intervention.setVerificateur(mecanoRepository.findById(form.verificateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
-        intervention.setReparateur(mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
-        intervention.setAvion(avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé")));
+        Mecano mecano = mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé"));
+        Avion avion = avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé"));
+        if (!mecano.getHabilitations().contains(avion.getTypeAvion())) throw new IllegalArgumentException("mécanicien pas habilité");
+        intervention.setReparateur(mecano);
+        intervention.setAvion(avion);
         interventionRepository.save(intervention);
     }
 
