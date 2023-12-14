@@ -102,4 +102,18 @@ public class InterventionController {
                 .map(InterventionShortDto::fromEntity)
                 .toList());
     }
+
+    /**
+     * Retrieves all interventions associated with a specific avion.
+     *
+     * @param id The ID of the avion.
+     * @return ResponseEntity representing a list of InterventionShortDto objects,
+     *         or ResponseEntity with no body if there are no interventions.
+     */
+    @GetMapping("/avion/{id}")
+    public ResponseEntity<List<InterventionShortDto>> getAllByAvion(@PathVariable String id) {
+        return ResponseEntity.ok(interventionService.getAllByAvion(id).stream()
+                .map(InterventionShortDto::fromEntity)
+                .toList());
+    }
 }

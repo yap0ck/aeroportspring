@@ -2,6 +2,7 @@ package be.gaetan.aeroportspring.bll.intervention;
 
 import be.gaetan.aeroportspring.dal.models.Intervention;
 import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
+import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.InterventionRepository;
 import be.gaetan.aeroportspring.dal.repositories.MecanoRepository;
 import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionForm;
@@ -14,10 +15,12 @@ import java.util.List;
 public class InterventionServiceImpl implements InterventionService {
     private final InterventionRepository interventionRepository;
     private final MecanoRepository mecanoRepository;
+    private final AvionRepository avionRepository;
 
-    public InterventionServiceImpl(InterventionRepository interventionRepository, MecanoRepository mecanoRepository) {
+    public InterventionServiceImpl(InterventionRepository interventionRepository, MecanoRepository mecanoRepository, AvionRepository avionRepository) {
         this.interventionRepository = interventionRepository;
         this.mecanoRepository = mecanoRepository;
+        this.avionRepository = avionRepository;
     }
 
     /**
@@ -33,6 +36,7 @@ public class InterventionServiceImpl implements InterventionService {
         intervention.setDuree(form.duree());
         intervention.setVerificateur(mecanoRepository.findById(form.verificateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
         intervention.setReparateur(mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
+        intervention.setAvion(avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé")));
         interventionRepository.save(intervention);
     }
 
@@ -74,6 +78,7 @@ public class InterventionServiceImpl implements InterventionService {
         intervention.setObjet(form.objet());
         intervention.setVerificateur(mecanoRepository.findById(form.verificateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
         intervention.setReparateur(mecanoRepository.findById(form.reparateurId()).orElseThrow(()-> new EntityNotFoundException("vérificateur non trouvé")));
+        intervention.setAvion(avionRepository.findById(form.avionId()).orElseThrow(()-> new EntityNotFoundException("Avion pas trouvé")));
         interventionRepository.save(intervention);
     }
 
@@ -109,5 +114,16 @@ public class InterventionServiceImpl implements InterventionService {
     @Override
     public List<Intervention> getAllByReparateur(long id) {
         return interventionRepository.findAllByReparateur(id);
+    }
+
+    /**
+     * Retrieves all Intervention objects associated with a specific avion ID.
+     *
+     * @param id the ID of the avion
+     * @return a List of Intervention objects associated with the given avion ID
+     */
+    @Override
+    public List<Intervention> getAllByAvion(String id) {
+        return interventionRepository.findAllByAvion(id);
     }
 }

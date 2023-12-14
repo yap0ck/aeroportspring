@@ -11,7 +11,8 @@ public record InterventionFullDto(
         LocalDate date,
         int duree,
         long reparateurId,
-        long verificateurId
+        long verificateurId,
+        String avionId
 ) {
     public static InterventionFullDto fromEntity(Intervention intervention){
         return new InterventionFullDto(
@@ -20,7 +21,8 @@ public record InterventionFullDto(
                 intervention.getDate(),
                 intervention.getDuree(),
                 intervention.getReparateur().getId(),
-                intervention.getVerificateur().getId()
+                intervention.getVerificateur().getId(),
+                intervention.getAvion().getImmatriculation()
         );
     }
 }

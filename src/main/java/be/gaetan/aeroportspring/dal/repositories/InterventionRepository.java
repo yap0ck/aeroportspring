@@ -16,4 +16,6 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     List<Intervention> findAllByReparateur(@Param("reparateur_id") long id);
     @Query("SELECT i FROM Intervention i JOIN i.verificateur v WHERE v.id = :verificateur_id")
     List<Intervention>findAllByVerificateur(@Param("verificateur_id") long id);
+    @Query("SELECT i FROM Intervention i JOIN i.avion a where a.immatriculation LIKE :avion_id")
+    List<Intervention>findAllByAvion(@Param("avion_id") String id);
 }

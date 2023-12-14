@@ -7,11 +7,13 @@ import java.time.LocalDate;
 public record InterventionShortDto(
         long id,
         String objet,
-        LocalDate date
+        LocalDate date,
+        String avionId
 ) {
     public static InterventionShortDto fromEntity(Intervention intervention){
         return new InterventionShortDto(intervention.getId(),
                 intervention.getObjet(),
-                intervention.getDate());
+                intervention.getDate(),
+                intervention.getAvion().getImmatriculation());
     }
 }

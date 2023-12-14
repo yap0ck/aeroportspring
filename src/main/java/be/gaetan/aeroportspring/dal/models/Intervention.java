@@ -34,4 +34,8 @@ public class Intervention {
     @ManyToOne
     @JoinColumn(name = "verificateur_id")
     private Mecano verificateur;
+    @Getter @Setter
+    @ManyToOne
+    @JoinColumn(name = "avion_id")
+    private Avion avion;
 }

@@ -13,4 +13,5 @@ public interface InterventionService {
     void delete(long id);
     List<Intervention> getAllByVerificateur(long id);
     List<Intervention> getAllByReparateur(long id);
+    List<Intervention> getAllByAvion(String id);
 }

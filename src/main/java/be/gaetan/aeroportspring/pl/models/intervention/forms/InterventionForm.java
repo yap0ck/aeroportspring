@@ -25,6 +25,8 @@ public record InterventionForm(
         @NotNull @NotBlank
         @Getter
         @DifferentIds
-        long verificateurId
+        long verificateurId,
+        @NotBlank @NotNull
+        String avionId
 ) {
 }
