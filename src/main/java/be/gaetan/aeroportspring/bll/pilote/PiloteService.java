@@ -11,4 +11,5 @@ public interface PiloteService {
     List<Pilote> getAll();
     void update(long id, PiloteForm form);
     void delete(long id);
+    int getTotalVol(long id);
 }

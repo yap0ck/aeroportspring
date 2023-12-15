@@ -76,4 +76,15 @@ public class PiloteController {
     public void delete(@PathVariable long id) {
         piloteService.delete(id);
     }
+
+    /**
+     * Retrieves the total volume of the pilot identified by the given ID.
+     *
+     * @param id The ID of the pilot.
+     * @return A ResponseEntity containing the total volume as an Integer.
+     */
+    @GetMapping("/{id}/totalVol")
+    public ResponseEntity<Integer> getTotalVol(@PathVariable long id) {
+        return ResponseEntity.ok(piloteService.getTotalVol(id));
+    }
 }

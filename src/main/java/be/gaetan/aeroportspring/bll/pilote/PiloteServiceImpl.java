@@ -1,5 +1,6 @@
 package be.gaetan.aeroportspring.bll.pilote;
 
+import be.gaetan.aeroportspring.dal.models.joinTables.PiloteTypeAvion;
 import be.gaetan.aeroportspring.dal.models.personnes.Pilote;
 import be.gaetan.aeroportspring.dal.repositories.PiloteRepository;
 import be.gaetan.aeroportspring.dal.repositories.PiloteTypeAvionRepository;
@@ -103,5 +104,20 @@ public class PiloteServiceImpl implements PiloteService{
         Pilote pilote = piloteRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("pilote non trouvé"));
         pilote.setDeleted(true);
         piloteRepository.save(pilote);
+    }
+
+    /**
+     * Calculates the total number of flights for a pilot with the given ID.
+     *
+     * @param id The ID of the pilot.
+     * @return The total number of flights for the pilot.
+     */
+    @Override
+    public int getTotalVol(long id) {
+            List<PiloteTypeAvion> piloteTypeAvionList = piloteTypeAvionRepository.findByPilote(getOne(id));
+            return piloteTypeAvionList.stream()
+                    .map(PiloteTypeAvion::getNbVols)
+                    .mapToInt(Integer::intValue)
+                    .sum();
     }
 }
