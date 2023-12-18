@@ -7,11 +7,16 @@ import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.InterventionRepository;
 import be.gaetan.aeroportspring.dal.repositories.MecanoRepository;
 import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionForm;
+import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionSearchForm;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -108,36 +113,41 @@ public class InterventionServiceImpl implements InterventionService {
     }
 
     /**
-     * Retrieves all Intervention objects associated with a specific verificateur ID.
+     * Searches for Intervention objects based on the provided InterventionSearchForm.
      *
-     * @param id the ID of the verificateur
-     * @return a List of Intervention objects associated with the given verificateur ID
+     * @param form the InterventionSearchForm containing the search criteria
+     * @return a Specification<Intervention> object representing the search criteria
      */
-    @Override
-    public Page<Intervention> getAllByVerificateur(long id, Pageable pageable) {
-        return interventionRepository.findAllByVerificateur(id, pageable);
+    private Specification<Intervention> search(InterventionSearchForm form){
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (form.date() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("date"), form.date()));
+            }
+            if (form.duree() > 0) {
+                predicates.add(criteriaBuilder.equal(root.get("duree"), form.duree()));
+            }
+            if (form.reparateurId() > 0) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), form.reparateurId()));
+            }
+            if (form.avion_id() != null && !form.avion_id().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("immatriculation"), "%" + form.avion_id() + "%"));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 
     /**
-     * Retrieves all Intervention objects associated with a specific reparateur ID.
+     * Retrieves all Intervention objects based on the provided InterventionSearchForm and Pageable parameters.
      *
-     * @param id the ID of the reparateur
-     * @return a List of Intervention objects associated with the given reparateur ID
+     * @param form     the InterventionSearchForm containing the search criteria
+     * @param pageable the Pageable object for pagination and sorting
+     * @return a Page of Intervention objects that match the search criteria
      */
     @Override
-    public Page<Intervention> getAllByReparateur(long id, Pageable pageable) {
-        return interventionRepository.findAllByReparateur(id, pageable);
-    }
-
-    /**
-     * Retrieves all Intervention objects associated with a specific avion ID.
-     *
-     * @param id the ID of the avion
-     * @return a List of Intervention objects associated with the given avion ID
-     */
-    @Override
-    public Page<Intervention> getAllByAvion(String id, Pageable pageable) {
-        return interventionRepository.findAllByAvion(id, pageable);
+    public Page<Intervention> getAllBySpec(InterventionSearchForm form, Pageable pageable) {
+        Specification<Intervention> spec = search(form);
+        return interventionRepository.findAll(spec, pageable);
     }
 
 }

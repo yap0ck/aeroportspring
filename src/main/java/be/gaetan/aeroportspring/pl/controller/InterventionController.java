@@ -5,6 +5,7 @@ import be.gaetan.aeroportspring.dal.models.Intervention;
 import be.gaetan.aeroportspring.pl.models.intervention.dtos.InterventionFullDto;
 import be.gaetan.aeroportspring.pl.models.intervention.dtos.InterventionShortDto;
 import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionForm;
+import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionSearchForm;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,38 +77,14 @@ public class InterventionController {
     }
 
     /**
-     * Retrieves all interventions associated with a specific verificateur.
+     * Search for interventions based on the provided search form.
      *
-     * @param id The ID of the verificateur.
-     * @return ResponseEntity representing a list of InterventionShortDto objects,
-     *         or ResponseEntity with no body if there are no interventions.
+     * @param form     The InterventionSearchForm object containing the search criteria.
+     * @param pageable The pageable object used for pagination.
+     * @return ResponseEntity representing a Page<InterventionShortDto> object containing the search results.
      */
-    @GetMapping("/verificateur/{id}")
-    public ResponseEntity<Page<InterventionShortDto>> getAllByVerificateur(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(interventionService.getAllByVerificateur(id, pageable).map(InterventionShortDto::fromEntity));
-    }
-
-    /**
-     * Retrieves all interventions associated with a specific reparateur.
-     *
-     * @param id The ID of the reparateur.
-     * @return ResponseEntity representing a list of InterventionShortDto objects,
-     *         or ResponseEntity with no body if there are no interventions.
-     */
-    @GetMapping("/reparateur/{id}")
-    public ResponseEntity<Page<InterventionShortDto>> getAllByReparateur(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(interventionService.getAllByReparateur(id, pageable).map(InterventionShortDto::fromEntity));
-    }
-
-    /**
-     * Retrieves all interventions associated with a specific avion.
-     *
-     * @param id The ID of the avion.
-     * @return ResponseEntity representing a list of InterventionShortDto objects,
-     *         or ResponseEntity with no body if there are no interventions.
-     */
-    @GetMapping("/avion/{id}")
-    public ResponseEntity<Page<InterventionShortDto>> getAllByAvion(@PathVariable String id, Pageable pageable) {
-        return ResponseEntity.ok(interventionService.getAllByAvion(id, pageable).map(InterventionShortDto::fromEntity));
+    @PostMapping("/search")
+    public ResponseEntity<Page<InterventionShortDto>> search(@RequestBody InterventionSearchForm form, Pageable pageable){
+        return ResponseEntity.ok(interventionService.getAllBySpec(form, pageable).map(InterventionShortDto::fromEntity));
     }
 }
