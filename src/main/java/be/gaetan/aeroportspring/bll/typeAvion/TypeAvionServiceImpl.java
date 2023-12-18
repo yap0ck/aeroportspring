@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.dal.repositories.PiloteTypeAvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.typeAvion.form.TypeAvionForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,8 +64,8 @@ public class TypeAvionServiceImpl implements TypeAvionService{
      * @return a List of TypeAvion objects
      */
     @Override
-    public List<TypeAvion> getAll() {
-        return typeAvionRepository.findAllByDeleted(false);
+    public Page<TypeAvion> getAll(Pageable pageable) {
+        return typeAvionRepository.findAllByDeleted(false, pageable);
     }
 
     /**
@@ -108,7 +110,7 @@ public class TypeAvionServiceImpl implements TypeAvionService{
      * @return a List of TypeAvion objects associated with the specified mecano id
      */
     @Override
-    public List<TypeAvion> getAllByMecanoId(long id) {
-        return typeAvionRepository.findAllByMecanoId(id);
+    public Page<TypeAvion> getAllByMecanoId(long id, Pageable pageable) {
+        return typeAvionRepository.findAllByMecanoId(id, pageable);
     }
 }

@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.pl.models.typeAvion.dto.TypeAvionFullDto;
 import be.gaetan.aeroportspring.pl.models.typeAvion.dto.TypeAvionShortDto;
 import be.gaetan.aeroportspring.pl.models.typeAvion.form.TypeAvionForm;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,10 +50,8 @@ public class TypeAvionController {
      * @return ResponseEntity containing a list of TypeAvionShortDto objects.
      */
     @GetMapping
-    public ResponseEntity<List<TypeAvionShortDto>> getAll() {
-        return ResponseEntity.ok(typeAvionService.getAll().stream()
-                .map(TypeAvionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<TypeAvionShortDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(typeAvionService.getAll(pageable).map(TypeAvionShortDto::fromEntity));
     }
 
     /**
@@ -82,9 +82,7 @@ public class TypeAvionController {
      * @return ResponseEntity containing a list of TypeAvionShortDto objects.
      */
     @GetMapping("/mecano/{id}")
-    public ResponseEntity<List<TypeAvionShortDto>> getAllByMecanoId(@PathVariable long id){
-        return ResponseEntity.ok(typeAvionService.getAllByMecanoId(id).stream()
-                .map(TypeAvionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<TypeAvionShortDto>> getAllByMecanoId(@PathVariable long id, Pageable pageable){
+        return ResponseEntity.ok(typeAvionService.getAllByMecanoId(id, pageable).map(TypeAvionShortDto::fromEntity));
     }
 }

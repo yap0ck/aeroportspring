@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.pl.models.avion.dto.AvionFullDto;
 import be.gaetan.aeroportspring.pl.models.avion.dto.AvionShortDto;
 import be.gaetan.aeroportspring.pl.models.avion.form.AvionForm;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,10 +50,8 @@ public class AvionController {
      * @return A ResponseEntity with a List of AvionShortDto objects representing all Avions, if any.
      */
     @GetMapping
-    public ResponseEntity<List<AvionShortDto>> getAll() {
-        return ResponseEntity.ok(avionService.getAll().stream()
-                .map(AvionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<AvionShortDto>> getAll(Pageable pageable) {
+        return ResponseEntity.ok(avionService.getAll(pageable).map(AvionShortDto::fromEntity));
     }
 
     /**

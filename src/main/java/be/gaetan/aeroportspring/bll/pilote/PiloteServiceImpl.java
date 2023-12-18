@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.dal.repositories.PiloteRepository;
 import be.gaetan.aeroportspring.dal.repositories.PiloteTypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.pilote.form.PiloteForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,8 +66,8 @@ public class PiloteServiceImpl implements PiloteService{
      * @return The list of non-deleted pilots.
      */
     @Override
-    public List<Pilote> getAll() {
-        return piloteRepository.findAllByDeleted(false);
+    public Page<Pilote> getAll(Pageable pageable) {
+        return piloteRepository.findAllByDeleted(false, pageable);
     }
 
     /**
@@ -113,11 +115,9 @@ public class PiloteServiceImpl implements PiloteService{
      * @return The total number of flights for the pilot.
      */
     @Override
-    public int getTotalVol(long id) {
-            List<PiloteTypeAvion> piloteTypeAvionList = piloteTypeAvionRepository.findByPilote(getOne(id));
-            return piloteTypeAvionList.stream()
-                    .map(PiloteTypeAvion::getNbVols)
-                    .mapToInt(Integer::intValue)
+    public int getTotalVol(long id, Pageable pageable) {
+            return piloteTypeAvionRepository.findByPilote(getOne(id),pageable).stream()
+                    .mapToInt(PiloteTypeAvion::getNbVols)
                     .sum();
     }
 }

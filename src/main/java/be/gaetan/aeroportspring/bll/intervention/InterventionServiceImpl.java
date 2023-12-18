@@ -8,6 +8,8 @@ import be.gaetan.aeroportspring.dal.repositories.InterventionRepository;
 import be.gaetan.aeroportspring.dal.repositories.MecanoRepository;
 import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,8 +68,8 @@ public class InterventionServiceImpl implements InterventionService {
      * @return a List of Intervention objects without deleted flag
      */
     @Override
-    public List<Intervention> getAll() {
-        return interventionRepository.findAllByDeleted(false);
+    public Page<Intervention> getAll(Pageable pageable) {
+        return interventionRepository.findAllByDeleted(false, pageable);
     }
 
     /**
@@ -112,8 +114,8 @@ public class InterventionServiceImpl implements InterventionService {
      * @return a List of Intervention objects associated with the given verificateur ID
      */
     @Override
-    public List<Intervention> getAllByVerificateur(long id) {
-        return interventionRepository.findAllByVerificateur(id);
+    public Page<Intervention> getAllByVerificateur(long id, Pageable pageable) {
+        return interventionRepository.findAllByVerificateur(id, pageable);
     }
 
     /**
@@ -123,8 +125,8 @@ public class InterventionServiceImpl implements InterventionService {
      * @return a List of Intervention objects associated with the given reparateur ID
      */
     @Override
-    public List<Intervention> getAllByReparateur(long id) {
-        return interventionRepository.findAllByReparateur(id);
+    public Page<Intervention> getAllByReparateur(long id, Pageable pageable) {
+        return interventionRepository.findAllByReparateur(id, pageable);
     }
 
     /**
@@ -134,8 +136,8 @@ public class InterventionServiceImpl implements InterventionService {
      * @return a List of Intervention objects associated with the given avion ID
      */
     @Override
-    public List<Intervention> getAllByAvion(String id) {
-        return interventionRepository.findAllByAvion(id);
+    public Page<Intervention> getAllByAvion(String id, Pageable pageable) {
+        return interventionRepository.findAllByAvion(id, pageable);
     }
 
 }

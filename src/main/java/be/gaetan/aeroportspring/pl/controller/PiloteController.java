@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.pl.models.pilote.dto.PiloteFullDto;
 import be.gaetan.aeroportspring.pl.models.pilote.dto.PiloteShortDto;
 import be.gaetan.aeroportspring.pl.models.pilote.form.PiloteForm;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,10 +51,8 @@ public class PiloteController {
      * @return A ResponseEntity containing the list of all pilots as a List of PiloteShortDto objects.
      */
     @GetMapping("/all")
-    public ResponseEntity<List<PiloteShortDto>> getAll(){
-        return ResponseEntity.ok(piloteService.getAll().stream()
-                .map(PiloteShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<PiloteShortDto>> getAll(Pageable pageable){
+        return ResponseEntity.ok(piloteService.getAll(pageable).map(PiloteShortDto::fromEntity));
     }
 
     /**
@@ -84,7 +84,7 @@ public class PiloteController {
      * @return A ResponseEntity containing the total volume as an Integer.
      */
     @GetMapping("/{id}/totalVol")
-    public ResponseEntity<Integer> getTotalVol(@PathVariable long id) {
-        return ResponseEntity.ok(piloteService.getTotalVol(id));
+    public ResponseEntity<Integer> getTotalVol(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(piloteService.getTotalVol(id, pageable));
     }
 }

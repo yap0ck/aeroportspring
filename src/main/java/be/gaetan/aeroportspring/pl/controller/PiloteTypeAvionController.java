@@ -3,6 +3,8 @@ package be.gaetan.aeroportspring.pl.controller;
 import be.gaetan.aeroportspring.bll.joinTables.PiloteTypeAvionService;
 import be.gaetan.aeroportspring.pl.models.joinTables.piloteTypeAvion.dtos.PiloteTypeAvionDto;
 import be.gaetan.aeroportspring.pl.models.joinTables.piloteTypeAvion.forms.PiloteTypeAvionForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,10 +46,8 @@ public class PiloteTypeAvionController {
      * @return A ResponseEntity containing a list of PiloteTypeAvionDto objects.
      */
     @GetMapping
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAll(){
-        return ResponseEntity.ok(piloteTypeAvionService.getAll().stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<PiloteTypeAvionDto>> getAll(Pageable pageable){
+        return ResponseEntity.ok(piloteTypeAvionService.getAll(pageable).map(PiloteTypeAvionDto::fromEntity));
     }
 
     /**
@@ -68,10 +68,8 @@ public class PiloteTypeAvionController {
      * @return A ResponseEntity containing a list of PiloteTypeAvionDto objects.
      */
     @GetMapping("/pilote/{id}")
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAllByPilote(@PathVariable long id) {
-        return ResponseEntity.ok(piloteTypeAvionService.getAllByPilote(id).stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<PiloteTypeAvionDto>> getAllByPilote(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(piloteTypeAvionService.getAllByPilote(id, pageable).map(PiloteTypeAvionDto::fromEntity));
     }
 
     /**
@@ -81,10 +79,8 @@ public class PiloteTypeAvionController {
      * @return A ResponseEntity containing a list of PiloteTypeAvionDto objects.
      */
     @GetMapping("/typeavion/{id}")
-    public ResponseEntity<List<PiloteTypeAvionDto>> getAllByTypeAvion(@PathVariable long id) {
-        return ResponseEntity.ok(piloteTypeAvionService.getAllByTypeAvion(id).stream()
-                .map(PiloteTypeAvionDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<PiloteTypeAvionDto>> getAllByTypeAvion(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(piloteTypeAvionService.getAllByTypeAvion(id, pageable).map(PiloteTypeAvionDto::fromEntity));
     }
 
     /**

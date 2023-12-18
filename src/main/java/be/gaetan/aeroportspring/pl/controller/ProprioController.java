@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.pl.models.proprio.dto.ProprioFullDto;
 import be.gaetan.aeroportspring.pl.models.proprio.dto.ProprioShortDto;
 import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +49,8 @@ public class ProprioController {
      * @return A ResponseEntity containing a list of ProprioShortDto representing all "Proprio" entities.
      */
     @GetMapping("/")
-    public ResponseEntity<List<ProprioShortDto>> getAllProprios() {
-        return ResponseEntity.ok(proprioService.getAll().stream()
-                .map(ProprioShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<ProprioShortDto>> getAllProprios(Pageable pageable) {
+        return ResponseEntity.ok(proprioService.getAll(pageable).map(ProprioShortDto::fromEntity));
     }
 
     /**

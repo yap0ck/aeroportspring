@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.ProprioRepository;
 import be.gaetan.aeroportspring.pl.models.proprio.form.ProprioForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,8 +58,8 @@ public class ProprioServiceImpl implements ProprioService{
      * @return A List containing all non-deleted Proprio entities.
      */
     @Override
-    public List<Proprio> getAll() {
-        return proprioRepository.findAllByDeleted(false);
+    public Page<Proprio> getAll(Pageable pageable) {
+        return proprioRepository.findAllByDeleted(false, pageable);
     }
 
     /**

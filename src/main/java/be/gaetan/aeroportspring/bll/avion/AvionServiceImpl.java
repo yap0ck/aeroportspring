@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.avion.form.AvionForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,8 +53,8 @@ public class AvionServiceImpl implements AvionService{
      * @return a List of Avion objects that are not marked as deleted
      */
     @Override
-    public List<Avion> getAll() {
-        return avionRepository.findAllByDeleted(false);
+    public Page<Avion> getAll(Pageable pageable) {
+        return avionRepository.findAllByDeleted(false, pageable);
     }
 
     /**

@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.dal.repositories.MecanoRepository;
 import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,8 +61,8 @@ public class MecanoServiceImpl implements MecanoService{
      * @return a list of Mecano objects
      */
     @Override
-    public List<Mecano> getAll() {
-        return mecanoRepository.findAllByDeleted(false);
+    public Page<Mecano> getAll(Pageable pageable) {
+        return mecanoRepository.findAllByDeleted(false, pageable);
     }
     /**
      * Updates a Mecano entity with the specified ID using the provided form data.

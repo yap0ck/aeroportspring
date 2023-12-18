@@ -6,6 +6,8 @@ import be.gaetan.aeroportspring.pl.models.intervention.dtos.InterventionFullDto;
 import be.gaetan.aeroportspring.pl.models.intervention.dtos.InterventionShortDto;
 import be.gaetan.aeroportspring.pl.models.intervention.forms.InterventionForm;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,10 +50,8 @@ public class InterventionController {
      *         or ResponseEntity with no body if there are no interventions.
      */
     @GetMapping
-    public ResponseEntity<List<InterventionShortDto>> getAll(){
-        return ResponseEntity.ok(interventionService.getAll().stream()
-                .map(InterventionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<InterventionShortDto>> getAll(Pageable pageable){
+        return ResponseEntity.ok(interventionService.getAll(pageable).map(InterventionShortDto::fromEntity));
     }
 
     /**
@@ -83,10 +83,8 @@ public class InterventionController {
      *         or ResponseEntity with no body if there are no interventions.
      */
     @GetMapping("/verificateur/{id}")
-    public ResponseEntity<List<InterventionShortDto>> getAllByVerificateur(@PathVariable long id) {
-        return ResponseEntity.ok(interventionService.getAllByVerificateur(id).stream()
-                .map(InterventionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<InterventionShortDto>> getAllByVerificateur(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(interventionService.getAllByVerificateur(id, pageable).map(InterventionShortDto::fromEntity));
     }
 
     /**
@@ -97,10 +95,8 @@ public class InterventionController {
      *         or ResponseEntity with no body if there are no interventions.
      */
     @GetMapping("/reparateur/{id}")
-    public ResponseEntity<List<InterventionShortDto>> getAllByReparateur(@PathVariable long id) {
-        return ResponseEntity.ok(interventionService.getAllByReparateur(id).stream()
-                .map(InterventionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<InterventionShortDto>> getAllByReparateur(@PathVariable long id, Pageable pageable) {
+        return ResponseEntity.ok(interventionService.getAllByReparateur(id, pageable).map(InterventionShortDto::fromEntity));
     }
 
     /**
@@ -111,9 +107,7 @@ public class InterventionController {
      *         or ResponseEntity with no body if there are no interventions.
      */
     @GetMapping("/avion/{id}")
-    public ResponseEntity<List<InterventionShortDto>> getAllByAvion(@PathVariable String id) {
-        return ResponseEntity.ok(interventionService.getAllByAvion(id).stream()
-                .map(InterventionShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<InterventionShortDto>> getAllByAvion(@PathVariable String id, Pageable pageable) {
+        return ResponseEntity.ok(interventionService.getAllByAvion(id, pageable).map(InterventionShortDto::fromEntity));
     }
 }

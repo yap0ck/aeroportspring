@@ -5,6 +5,8 @@ import be.gaetan.aeroportspring.dal.models.personnes.Mecano;
 import be.gaetan.aeroportspring.pl.models.mecano.dto.MecanoFullDto;
 import be.gaetan.aeroportspring.pl.models.mecano.dto.MecanoShortDto;
 import be.gaetan.aeroportspring.pl.models.mecano.form.MecanoForm;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,10 +47,8 @@ public class MecanoController {
      * @return ResponseEntity<List < MecanoShortDto>> The ResponseEntity containing a list of MecanoShortDto objects.
      */
     @GetMapping("/all")
-    public ResponseEntity<List<MecanoShortDto>> getAllMecanos() {
-        return ResponseEntity.ok(mecanoService.getAll().stream()
-                .map(MecanoShortDto::fromEntity)
-                .toList());
+    public ResponseEntity<Page<MecanoShortDto>> getAllMecanos(Pageable pageable) {
+        return ResponseEntity.ok(mecanoService.getAll(pageable).map(MecanoShortDto::fromEntity));
     }
     /**
      * Updates a Mecano with the specified ID using the provided MecanoForm.

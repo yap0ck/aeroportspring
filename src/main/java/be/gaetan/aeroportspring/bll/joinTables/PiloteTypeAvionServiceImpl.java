@@ -7,6 +7,8 @@ import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.joinTables.piloteTypeAvion.dtos.PiloteTypeAvionDto;
 import be.gaetan.aeroportspring.pl.models.joinTables.piloteTypeAvion.forms.PiloteTypeAvionForm;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -63,8 +65,8 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
      * @return A list of PiloteTypeAvion entities.
      */
     @Override
-    public List<PiloteTypeAvion> getAll() {
-        return piloteTypeAvionRepository.findAllByDeleted(false);
+    public Page<PiloteTypeAvion> getAll(Pageable pageable) {
+        return piloteTypeAvionRepository.findAllByDeleted(false, pageable);
     }
 
     /**
@@ -108,8 +110,8 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
      * @throws EntityNotFoundException If the Pilote is not found based on the provided ID.
      */
     @Override
-    public List<PiloteTypeAvion> getAllByPilote(long id) {
-        return piloteTypeAvionRepository.findByPilote(piloteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("pilote non trouvé")));
+    public Page<PiloteTypeAvion> getAllByPilote(long id, Pageable pageable) {
+        return piloteTypeAvionRepository.findByPilote(piloteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("pilote non trouvé")), pageable);
     }
 
     /**
@@ -120,7 +122,7 @@ public class PiloteTypeAvionServiceImpl implements PiloteTypeAvionService{
      * @throws EntityNotFoundException If the type avion is not found based on the provided ID.
      */
     @Override
-    public List<PiloteTypeAvion> getAllByTypeAvion(long id) {
-        return piloteTypeAvionRepository.findByTypeAvion(typeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("type d'avion non trouvé")));
+    public Page<PiloteTypeAvion> getAllByTypeAvion(long id, Pageable pageable) {
+        return piloteTypeAvionRepository.findByTypeAvion(typeAvionRepository.findById(id).orElseThrow(()->new EntityNotFoundException("type d'avion non trouvé")),pageable);
     }
 }
