@@ -13,5 +13,5 @@ public interface PiloteService {
     Page<Pilote> getAll(Pageable pageable);
     void update(long id, PiloteForm form);
     void delete(long id);
-    int getTotalVol(long id, Pageable pageable);
+    int getTotalVol(long id);
 }

@@ -1,12 +1,15 @@
 package be.gaetan.aeroportspring.pl.controller;
 
 import be.gaetan.aeroportspring.bll.avion.AvionService;
+import be.gaetan.aeroportspring.dal.models.Avion;
 import be.gaetan.aeroportspring.pl.models.avion.dto.AvionFullDto;
 import be.gaetan.aeroportspring.pl.models.avion.dto.AvionShortDto;
 import be.gaetan.aeroportspring.pl.models.avion.form.AvionForm;
+import be.gaetan.aeroportspring.pl.models.avion.form.AvionSearchForm;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,5 +78,17 @@ public class AvionController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         avionService.delete(id);
+    }
+
+    /**
+     * Search for Avions based on the specified search form and pageable parameters.
+     *
+     * @param form     The AvionSearchForm object containing the search criteria.
+     * @param pageable The Pageable object for pagination and sorting.
+     * @return A ResponseEntity with a Page of AvionShortDto objects representing the search results, if any.
+     */
+    @PostMapping("/search")
+    public ResponseEntity<Page<AvionShortDto>> search(@RequestBody AvionSearchForm form, Pageable pageable){
+        return ResponseEntity.ok(avionService.getAllBySpec(form, pageable).map(AvionShortDto::fromEntity));
     }
 }

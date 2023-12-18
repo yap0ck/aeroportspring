@@ -115,8 +115,8 @@ public class PiloteServiceImpl implements PiloteService{
      * @return The total number of flights for the pilot.
      */
     @Override
-    public int getTotalVol(long id, Pageable pageable) {
-            return piloteTypeAvionRepository.findByPilote(getOne(id),pageable).stream()
+    public int getTotalVol(long id) {
+            return piloteTypeAvionRepository.findByPilote(getOne(id),null).stream()
                     .mapToInt(PiloteTypeAvion::getNbVols)
                     .sum();
     }

@@ -4,12 +4,17 @@ import be.gaetan.aeroportspring.dal.models.Avion;
 import be.gaetan.aeroportspring.dal.repositories.AvionRepository;
 import be.gaetan.aeroportspring.dal.repositories.TypeAvionRepository;
 import be.gaetan.aeroportspring.pl.models.avion.form.AvionForm;
+import be.gaetan.aeroportspring.pl.models.avion.form.AvionSearchForm;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class AvionServiceImpl implements AvionService{
     private final AvionRepository avionRepository;
@@ -83,5 +88,33 @@ public class AvionServiceImpl implements AvionService{
         Avion avion = getOne(id);
         avion.setDeleted(true);
         avionRepository.save(avion);
+    }
+
+    /**
+     * Retrieves all Avion objects based on the provided AvionSearchForm and Pageable.
+     *
+     * @param form     the AvionSearchForm object that contains the search criteria
+     * @param pageable the Pageable object for pagination and sorting
+     * @return a Page of Avion objects that match the search criteria and satisfy the provided Pageable
+     */
+    @Override
+    public Page<Avion> getAllBySpec(AvionSearchForm form, Pageable pageable){
+        Specification<Avion> spec = createSpecification(form);
+        return avionRepository.findAll(spec,pageable);
+    }
+
+    /**
+     * Creates a Specification object based on the provided AvionSearchForm.
+     *
+     * @param form the AvionSearchForm object that contains the search criteria
+     * @return a Specification object for querying the Avion entities based on the search criteria
+     */
+    private Specification<Avion> createSpecification(AvionSearchForm form){
+        return ((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (form.immatriculation()!=null) predicates.add(criteriaBuilder.like(root.get("immatriculation"), "%" + form.immatriculation() + "%"));
+            if (form.id() != 0) predicates.add(criteriaBuilder.equal(root.get("type_avion_id"), "%" + form.id() + "%"));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
     }
 }

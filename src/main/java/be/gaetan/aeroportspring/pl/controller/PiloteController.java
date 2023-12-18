@@ -84,7 +84,7 @@ public class PiloteController {
      * @return A ResponseEntity containing the total volume as an Integer.
      */
     @GetMapping("/{id}/totalVol")
-    public ResponseEntity<Integer> getTotalVol(@PathVariable long id, Pageable pageable) {
-        return ResponseEntity.ok(piloteService.getTotalVol(id, pageable));
+    public ResponseEntity<Integer> getTotalVol(@PathVariable long id) {
+        return ResponseEntity.ok(piloteService.getTotalVol(id));
     }
 }
